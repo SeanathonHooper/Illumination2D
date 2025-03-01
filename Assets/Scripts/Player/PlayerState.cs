@@ -21,7 +21,12 @@ public class PlayerState : MonoBehaviour
         Healthy
     }
 
-    private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>();
+    private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>
+    {
+        { PlayerHealthState.Dead ,Color.black},
+        { PlayerHealthState.Weak ,Color.yellow},
+        { PlayerHealthState.Healthy,Color.white}
+    };
     private PlayerHealthState _playerHealthState;
     
     public void DamagePlayer(int damage)
@@ -49,9 +54,6 @@ public class PlayerState : MonoBehaviour
 
     private void Awake()
     {
-        _healthStateColorLookup.Add(PlayerHealthState.Dead, Color.red);
-        _healthStateColorLookup.Add(PlayerHealthState.Weak, Color.yellow);
-        _healthStateColorLookup.Add(PlayerHealthState.Healthy, Color.white);
         _playerCurrentHealth = _playerMaxHealth;
         _playerHealthState = PlayerHealthState.Healthy;
         _playerColor.color = _healthStateColorLookup[_playerHealthState];
