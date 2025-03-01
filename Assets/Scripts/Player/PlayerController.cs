@@ -35,7 +35,7 @@ public class PlayerController : MonoBehaviour
         _playerInput.Disable();
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
+ 
     private void MovePlayer()
     {
         if (_playerInputMoveDir.x != 0)
@@ -56,13 +56,17 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // ReSharper disable Unity.PerformanceAnalysis
+
     private void CheckIfGrounded()
     {
-        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 1.2f, LayerMask.GetMask("Ground")) && (_rigidbody.linearVelocityY <= 0.001f))
+        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 0.75f,
+                LayerMask.GetMask("Ground")) && (_rigidbody.linearVelocityY <= 0.001f))
         {
             _isGrounded = true;
-            Debug.Log("Grounded");
+        }
+        else
+        {
+            _isGrounded = false;
         }
     }
 

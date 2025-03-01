@@ -48,8 +48,12 @@ public class PlayerState : MonoBehaviour
 
     private void SetPlayerState(PlayerHealthState newHealthState)
     {
-        _playerHealthState = newHealthState;
-        _playerColor.color = _healthStateColorLookup[_playerHealthState];
+        if (newHealthState != PlayerHealthState.Dead)
+        {
+            _playerHealthState = newHealthState;
+            _playerColor.color = _healthStateColorLookup[_playerHealthState];
+        }
+        
     }
 
     private void Awake()
