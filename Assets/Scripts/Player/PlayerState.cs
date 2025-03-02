@@ -24,8 +24,8 @@ public class PlayerState : MonoBehaviour
     private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>
     {
         { PlayerHealthState.Dead ,Color.black},
-        { PlayerHealthState.Weak ,Color.yellow},
-        { PlayerHealthState.Healthy,Color.white}
+        { PlayerHealthState.Weak ,Color.white},
+        { PlayerHealthState.Healthy,new Color(1, .37254f, .85882f)}
     };
     private PlayerHealthState _playerHealthState;
     
