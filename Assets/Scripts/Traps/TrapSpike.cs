@@ -5,9 +5,9 @@ public class TrapSpike : MonoBehaviour
 {
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.GetComponent<PlayerState>())
+        if (other.gameObject.GetComponent<Player>())
         {
-            other.gameObject.GetComponent<PlayerState>().DamagePlayer(1);
+            other.gameObject.GetComponent<Player>().DamagePlayer(1);
         }
     }
 }
