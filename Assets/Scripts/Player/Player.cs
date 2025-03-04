@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     private int _playerMaxHealth = 2;
     private Vector3 _playerCheckpointLocation;
     
+    // Possible health states
     public enum PlayerHealthState
     {
         Dead,
@@ -17,6 +18,7 @@ public class Player : MonoBehaviour
         Healthy
     }
     
+    //Maps the PlayerHealthState to what color they should be
     private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>
     {
         { PlayerHealthState.Dead, Color.black },
@@ -43,6 +45,8 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Pretty much just changes the player color, also calls the player
+    //Death event
     public void SetPlayerState(PlayerHealthState newHealthState)
     {
         _playerHealthState = newHealthState;
@@ -53,35 +57,36 @@ public class Player : MonoBehaviour
         }
     }
 
+    //Setting up player death event
     public delegate void PLayerDeath();
     public event PLayerDeath OnPlayerDeath;
 
+    //Function that runs when the player dies
+    //Tells the game manager to tell the camera to stop following the player basically
     private void notifyOnPlayerDeath()
     {
-        MovePlayerToCheckpoint();
-        _playerCurrentHealth = _playerMaxHealth;
         OnPlayerDeath?.Invoke();
         gameObject.SetActive(false);
     }
 
+    //Re-enables player object to continue playing.
     public void RespawnPlayer()
     {
+        MovePlayerToCheckpoint();
+        _playerCurrentHealth = _playerMaxHealth;
         gameObject.SetActive(true);
         SetPlayerState(PlayerHealthState.Healthy);
     }
-    
-    
-
+    //Updates which checkpoint the player is at
     public void SetPlayerCheckpoint(Vector3 checkpoint)
     {
         _playerCheckpointLocation = checkpoint;
     }
-
+    //Move the player to their current checkpoint
     public void MovePlayerToCheckpoint()
     {
         transform.position = _playerCheckpointLocation;
     }
-
     private void Awake()
     {
             _playerCurrentHealth = _playerMaxHealth;

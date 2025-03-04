@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -24,7 +22,8 @@ public class GameManager : MonoBehaviour
 
    private void OnDestroy()
    {
-      //Just in case the game manager somehow gets destroyed (You probably have bigger problems at that point)
+      //Unsubscribes from player death event just in case the game manager somehow gets destroyed
+      //(You probably have bigger problems at that point)
       _playerEntity.OnPlayerDeath -= PlayerEntityOnPlayerDeath;
    }
 
