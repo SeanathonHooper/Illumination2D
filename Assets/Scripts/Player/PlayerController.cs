@@ -55,6 +55,7 @@ public class PlayerController : MonoBehaviour
             _rigidbody.linearVelocity = _currentXVelocity;
         }
     }
+    
 
 
     private void CheckIfGrounded()

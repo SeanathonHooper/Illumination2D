@@ -1,4 +1,7 @@
+using System;
+using System.Collections;
 using Unity.Cinemachine;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -16,5 +19,27 @@ public class GameManager : MonoBehaviour
       _levelCam = Instantiate(cameraPrefab, new Vector3(0,0,-10), levelStartPoint.rotation).GetComponent<CinemachineCamera>();
       _levelCam.Follow = _playerEntity.transform;
       _playerEntity.SetPlayerCheckpoint(levelStartPoint.position);
+      _playerEntity.OnPlayerDeath += PlayerEntityOnPlayerDeath;
+   }
+
+   private void OnDestroy()
+   {
+      //Just in case the game manager somehow gets destroyed (You probably have bigger problems at that point)
+      _playerEntity.OnPlayerDeath -= PlayerEntityOnPlayerDeath;
+   }
+
+   private void PlayerEntityOnPlayerDeath()
+   {
+      _levelCam.Follow = null;
+      _playerEntity.ResetPlayerState();
+      StartCoroutine(_waitForRespawn());
+   }
+
+   IEnumerator _waitForRespawn()
+   {
+      yield return new WaitForSeconds(3.0f);
+      _playerEntity.gameObject.SetActive(true);
+      _playerEntity.SetPlayerState(Player.PlayerHealthState.Healthy);
+      _levelCam.Follow = _playerEntity.transform;
    }
 }

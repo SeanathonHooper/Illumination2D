@@ -1,8 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
@@ -17,6 +15,13 @@ public class Player : MonoBehaviour
         Dead,
         Weak,
         Healthy
+    }
+    
+    public void ResetPlayerState()
+    {
+        gameObject.SetActive(false);
+        MovePlayerToCheckpoint();
+        _playerCurrentHealth = _playerMaxHealth;
     }
 
     private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>
@@ -45,11 +50,25 @@ public class Player : MonoBehaviour
         }
     }
 
-    private void SetPlayerState(PlayerHealthState newHealthState)
+    public void SetPlayerState(PlayerHealthState newHealthState)
     {
         _playerHealthState = newHealthState;
         _playerColor.color = _healthStateColorLookup[_playerHealthState];
+        if (newHealthState == PlayerHealthState.Dead)
+        {
+            notifyOnPlayerDeath();
+        }
     }
+
+    public delegate void PLayerDeath();
+    public event PLayerDeath OnPlayerDeath;
+
+    private void notifyOnPlayerDeath()
+    {
+        OnPlayerDeath?.Invoke();
+    }
+    
+    
 
     public void SetPlayerCheckpoint(Vector3 checkpoint)
     {
