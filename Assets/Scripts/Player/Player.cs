@@ -17,13 +17,6 @@ public class Player : MonoBehaviour
         Healthy
     }
     
-    public void ResetPlayerState()
-    {
-        gameObject.SetActive(false);
-        MovePlayerToCheckpoint();
-        _playerCurrentHealth = _playerMaxHealth;
-    }
-
     private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>
     {
         { PlayerHealthState.Dead, Color.black },
@@ -65,7 +58,16 @@ public class Player : MonoBehaviour
 
     private void notifyOnPlayerDeath()
     {
+        MovePlayerToCheckpoint();
+        _playerCurrentHealth = _playerMaxHealth;
         OnPlayerDeath?.Invoke();
+        gameObject.SetActive(false);
+    }
+
+    public void RespawnPlayer()
+    {
+        gameObject.SetActive(true);
+        SetPlayerState(PlayerHealthState.Healthy);
     }
     
     

@@ -31,15 +31,13 @@ public class GameManager : MonoBehaviour
    private void PlayerEntityOnPlayerDeath()
    {
       _levelCam.Follow = null;
-      _playerEntity.ResetPlayerState();
       StartCoroutine(_waitForRespawn());
    }
 
    IEnumerator _waitForRespawn()
    {
       yield return new WaitForSeconds(3.0f);
-      _playerEntity.gameObject.SetActive(true);
-      _playerEntity.SetPlayerState(Player.PlayerHealthState.Healthy);
+      _playerEntity.RespawnPlayer();
       _levelCam.Follow = _playerEntity.transform;
    }
 }
