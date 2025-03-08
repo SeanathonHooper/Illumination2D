@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -14,6 +15,16 @@ public class PushButton : MonoBehaviour
     private Vector3 _buttonUpPosition = new Vector3(0, 0.6f, 0);
     private float _pressSpeed = 0.5f;
     private bool _isPushed;
+
+    public enum PushButtonType
+    {
+        Player,
+        PhysicsObjects
+    }
+
+
+    
+    [SerializeField] PushButtonType _buttonType = PushButtonType.Player;
     
     public delegate void ButtonPushed();
     public event ButtonPushed OnButtonPushedEvent;
@@ -47,8 +58,8 @@ public class PushButton : MonoBehaviour
 
     private void TryPushButton()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, 1.2f, LayerMask.GetMask("Player"));
-        Debug.DrawRay(transform.position, Vector2.up * 1.2f, Color.green);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, 0.8f, LayerMask.GetMask(_buttonType.ToString()));
+        Debug.DrawRay(transform.position, Vector2.up * 0.8f, Color.green);
         
         if (hit)
         {
