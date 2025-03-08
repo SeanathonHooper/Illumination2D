@@ -6,7 +6,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D _rigidbody;
     private bool _isGrounded;
     private const float MoveSpeed = 5f;
-    private const  float JumpForce = 15f;
+    private const  float JumpForce = 10f;
     private Vector2 _currentXVelocity = Vector2.zero;
     
     private Vector2 _playerInputMoveDir = new Vector2(0,0);
@@ -69,10 +69,6 @@ public class PlayerController : MonoBehaviour
                 LayerMask.GetMask("Ground")) && (_rigidbody.linearVelocityY <= 0.001f))
         {
             _isGrounded = true;
-        }
-        else
-        {
-            _isGrounded = false;
         }
     }
 

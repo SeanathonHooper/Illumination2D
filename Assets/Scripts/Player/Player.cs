@@ -58,8 +58,8 @@ public class Player : MonoBehaviour
     }
 
     //Setting up player death event
-    public delegate void PLayerDeath();
-    public event PLayerDeath OnPlayerDeath;
+    public delegate void PlayerDeath();
+    public event PlayerDeath OnPlayerDeath;
 
     //Function that runs when the player dies
     //Tells the game manager to tell the camera to stop following the player basically
