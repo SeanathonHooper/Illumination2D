@@ -1,26 +1,20 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public class PushButton : MonoBehaviour
 {
+
+    private SpriteRenderer _spriteRenderer;
+    private Light2D _light2D;
+    
+    private Vector3 _buttonDownPosition = new Vector3(0, 0.35f, 0);
+    private Vector3 _buttonUpPosition = new Vector3(0, 0.6f, 0);
+    private float _pressSpeed = 0.5f;
     private bool _isPushed;
-    private Vector3 _buttonPushDownSpeed = new Vector3(0f, 0.0008f, 0f);
-    [SerializeField] private SpriteRenderer _spriteRenderer;
-
-    private void Awake()
-    {
-        _isPushed = false;
-    }
-
-    private void Update()
-    {
-        if (!_isPushed)
-        {
-            TryPushButton();
-        }
-    }
-
+    
     public delegate void ButtonPushed();
     public event ButtonPushed OnButtonPushedEvent;
 
@@ -37,11 +31,18 @@ public class PushButton : MonoBehaviour
         while (elapsedTime < 1)
         {
             _spriteRenderer.color = Color.Lerp(Color.red, Color.green, elapsedTime);
-            elapsedTime += Time.deltaTime;
+            _light2D.color = Color.Lerp(Color.red, Color.green, elapsedTime);
+            elapsedTime += Time.deltaTime * 3;
 
             yield return null;
         }
         _spriteRenderer.color = Color.green;
+    }
+
+    private void Awake()
+    {
+        _spriteRenderer = GetComponent<SpriteRenderer>();
+        _light2D = GetComponent<Light2D>();
     }
 
     private void TryPushButton()
@@ -49,24 +50,29 @@ public class PushButton : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.up, 1.2f, LayerMask.GetMask("Player"));
         Debug.DrawRay(transform.position, Vector2.up * 1.2f, Color.green);
         
-        if (hit && !_isPushed)
+        if (hit)
         {
-            if (transform.localPosition.y > 0.35f && !_isPushed)
-            {
-                transform.localPosition -= _buttonPushDownSpeed;
-            }
-            else if (transform.localPosition.y <= 0.35f)
-            {
-                OnButtonPushed();
-            }
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, _buttonDownPosition, _pressSpeed * Time.deltaTime); 
+            _spriteRenderer.color = Color.Lerp(Color.red, Color.green, _pressSpeed * Time.deltaTime);
         }
-        else if (!hit && !_isPushed)
+        else
         { 
-            if (transform.localPosition.y < 0.6f && !_isPushed)
-            {
-                transform.localPosition += _buttonPushDownSpeed;
-                
-            }
+            transform.localPosition = Vector3.MoveTowards(transform.localPosition, _buttonUpPosition, _pressSpeed * Time.deltaTime); 
+        }
+
+        if (transform.localPosition == _buttonDownPosition)
+        {
+            OnButtonPushed();
         }
     }
+    
+    private void Update()
+    {
+        if (!_isPushed)
+        {
+            TryPushButton();
+        }
+    }
+
+
 }

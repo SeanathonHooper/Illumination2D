@@ -1,10 +1,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Light2D _playerColor;
+    [FormerlySerializedAs("_playerColor")] [SerializeField] private Light2D playerColor;
 
     private int _playerCurrentHealth;
     private int _playerMaxHealth = 2;
@@ -50,7 +51,7 @@ public class Player : MonoBehaviour
     public void SetPlayerState(PlayerHealthState newHealthState)
     {
         _playerHealthState = newHealthState;
-        _playerColor.color = _healthStateColorLookup[_playerHealthState];
+        playerColor.color = _healthStateColorLookup[_playerHealthState];
         if (newHealthState == PlayerHealthState.Dead)
         {
             notifyOnPlayerDeath();
@@ -91,7 +92,7 @@ public class Player : MonoBehaviour
     {
             _playerCurrentHealth = _playerMaxHealth;
             _playerHealthState = PlayerHealthState.Healthy;
-            _playerColor.color = _healthStateColorLookup[_playerHealthState];
+            playerColor.color = _healthStateColorLookup[_playerHealthState];
     }
 
 
