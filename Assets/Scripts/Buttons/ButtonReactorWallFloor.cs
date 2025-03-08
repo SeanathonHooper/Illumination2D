@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class ButtonReactor : MonoBehaviour
+public class ButtonReactorWallFloor : MonoBehaviour
 {
     [SerializeField] PushButton pushButton;
     [SerializeField] private Transform moveToLocation;
