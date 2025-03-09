@@ -27,10 +27,19 @@ public class Player : MonoBehaviour
     public void DamagePlayer(int damage)
     {
         _playerCurrentHealth -= damage;
-        playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
+        
         if (_playerCurrentHealth <= 0)
         {
+            playerColor.color = _playerHealthColorLook[0];
             notifyOnPlayerDeath();
+        }
+        else if (_playerCurrentHealth >= 2)
+        {
+            playerColor.color = _playerHealthColorLook[2];
+        }
+        else
+        {
+            playerColor.color = _playerHealthColorLook[1];
         }
     }
 
@@ -50,7 +59,7 @@ public class Player : MonoBehaviour
         _playerCurrentHealth = _playerMaxHealth;
         gameObject.SetActive(true);
         playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
-        _levelCam.Follow = cameraPrefab.transform;
+        _levelCam.Follow = transform;
     }
     //Updates which checkpoint the player is at
     public void SetPlayerCheckpoint(Vector3 checkpoint)
