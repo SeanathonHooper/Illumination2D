@@ -65,7 +65,7 @@ public class PlayerController : MonoBehaviour
     private void CheckIfGrounded()
     {
         //Does a raycast below the player to reset the jump counter
-        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 0.75f) 
+        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 0.75f, LayerMask.GetMask("Ground")) 
             && (_rigidbody.linearVelocityY <= 0.001f))
         {
             _isGrounded = true;
