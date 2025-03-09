@@ -121,7 +121,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89e28191efad12741b01847d03dd172b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _playerColor: {fileID: 5376260703660729248}
+  playerColor: {fileID: 5376260703660729248}
+  cameraPrefab: {fileID: 5065194372872981127, guid: 1558a3215f0eb074389d09a03c59c643, type: 3}
 --- !u!114 &7728210593519076172
 MonoBehaviour:
   m_ObjectHideFlags: 0

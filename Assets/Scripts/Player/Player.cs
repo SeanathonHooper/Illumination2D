@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Serialization;
@@ -6,68 +7,40 @@ using UnityEngine.Serialization;
 public class Player : MonoBehaviour
 {
     [FormerlySerializedAs("_playerColor")] [SerializeField] private Light2D playerColor;
-
+    [SerializeField] private GameObject cameraPrefab;
+    
     private int _playerCurrentHealth;
     private int _playerMaxHealth = 2;
     private Vector3 _playerCheckpointLocation;
     
-    // Possible health states
-    public enum PlayerHealthState
-    {
-        Dead,
-        Weak,
-        Healthy
-    }
+    private CinemachineCamera _levelCam;
+    
     
     //Maps the PlayerHealthState to what color they should be
-    private Dictionary<PlayerHealthState, Color> _healthStateColorLookup = new Dictionary<PlayerHealthState, Color>
+    private Dictionary<int, Color> _playerHealthColorLook = new Dictionary<int, Color>
     {
-        { PlayerHealthState.Dead, Color.black },
-        { PlayerHealthState.Weak, Color.white },
-        { PlayerHealthState.Healthy, new Color(1, .37254f, .85882f) }
+        { 0, Color.black },
+        { 1, Color.cyan},
+        { 2, Color.magenta }
     };
-
-    private PlayerHealthState _playerHealthState;
-
+    
     public void DamagePlayer(int damage)
     {
         _playerCurrentHealth -= damage;
+        playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
         if (_playerCurrentHealth <= 0)
-        {
-            SetPlayerState(PlayerHealthState.Dead);
-        }
-        else if (_playerCurrentHealth == 1)
-        {
-            SetPlayerState(PlayerHealthState.Weak);
-        }
-        else
-        {
-            SetPlayerState(PlayerHealthState.Healthy);
-        }
-    }
-
-    //Pretty much just changes the player color, also calls the player
-    //Death event
-    public void SetPlayerState(PlayerHealthState newHealthState)
-    {
-        _playerHealthState = newHealthState;
-        playerColor.color = _healthStateColorLookup[_playerHealthState];
-        if (newHealthState == PlayerHealthState.Dead)
         {
             notifyOnPlayerDeath();
         }
     }
 
-    //Setting up player death event
-    public delegate void PlayerDeath();
-    public event PlayerDeath OnPlayerDeath;
-
     //Function that runs when the player dies
-    //Tells the game manager to tell the camera to stop following the player basically
+    //Tells the game manager to start the respawn timer
     private void notifyOnPlayerDeath()
     {
-        OnPlayerDeath?.Invoke();
+        _levelCam.Follow = null;
         gameObject.SetActive(false);
+        GameManager.Instance.StartCoroutine(GameManager.Instance.waitForRespawn());
     }
 
     //Re-enables player object to continue playing.
@@ -76,7 +49,8 @@ public class Player : MonoBehaviour
         MovePlayerToCheckpoint();
         _playerCurrentHealth = _playerMaxHealth;
         gameObject.SetActive(true);
-        SetPlayerState(PlayerHealthState.Healthy);
+        playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
+        _levelCam.Follow = cameraPrefab.transform;
     }
     //Updates which checkpoint the player is at
     public void SetPlayerCheckpoint(Vector3 checkpoint)
@@ -84,15 +58,16 @@ public class Player : MonoBehaviour
         _playerCheckpointLocation = checkpoint;
     }
     //Move the player to their current checkpoint
-    public void MovePlayerToCheckpoint()
+    private void MovePlayerToCheckpoint()
     {
         transform.position = _playerCheckpointLocation;
     }
     private void Awake()
     {
             _playerCurrentHealth = _playerMaxHealth;
-            _playerHealthState = PlayerHealthState.Healthy;
-            playerColor.color = _healthStateColorLookup[_playerHealthState];
+            playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
+            _levelCam = Instantiate(cameraPrefab, transform.position, transform.rotation).GetComponent<CinemachineCamera>();
+            _levelCam.Follow = transform;
     }
 
 
