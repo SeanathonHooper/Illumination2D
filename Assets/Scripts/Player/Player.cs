@@ -6,11 +6,13 @@ using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
-    [FormerlySerializedAs("_playerColor")] [SerializeField] private Light2D playerColor;
+    [SerializeField] private Light2D playerColor;
+    [SerializeField] private bool isInvulnerable = false;
     [SerializeField] private GameObject cameraPrefab;
     
     private int _playerCurrentHealth;
     private int _playerMaxHealth = 2;
+    
     private Vector3 _playerCheckpointLocation;
     
     private CinemachineCamera _levelCam;
@@ -26,6 +28,11 @@ public class Player : MonoBehaviour
     
     public void DamagePlayer(int damage)
     {
+        if (isInvulnerable)
+        {
+            return;
+        }
+        
         _playerCurrentHealth -= damage;
         
         if (_playerCurrentHealth <= 0)
@@ -70,6 +77,11 @@ public class Player : MonoBehaviour
     private void MovePlayerToCheckpoint()
     {
         transform.position = _playerCheckpointLocation;
+    }
+
+    public int GetCurrentHealth()
+    {
+        return _playerCurrentHealth;
     }
     private void Awake()
     {

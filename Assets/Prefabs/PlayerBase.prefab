@@ -96,7 +96,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDamping: 0
-  m_AngularDamping: 0.05
+  m_AngularDamping: 1
   m_GravityScale: 3
   m_Material: {fileID: 6200000, guid: e3d847524a2eb4445a43b015024647ea, type: 2}
   m_IncludeLayers:
@@ -123,6 +123,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerColor: {fileID: 5376260703660729248}
   cameraPrefab: {fileID: 5065194372872981127, guid: 1558a3215f0eb074389d09a03c59c643, type: 3}
+  _isInvulnerable: 1
 --- !u!114 &7728210593519076172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,6 +136,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e8467e130f6b3e4ebea0cc1a1bb6dc8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isGrounded: 1
 --- !u!1 &6603301250162555984
 GameObject:
   m_ObjectHideFlags: 0
@@ -240,7 +242,7 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0.672
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
+  m_Intensity: 5.18
   m_LightVolumeIntensity: 1
   m_LightVolumeEnabled: 0
   m_ApplyToSortingLayers: 00000000

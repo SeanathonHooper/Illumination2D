@@ -4,18 +4,18 @@ public class PlayerController : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private Rigidbody2D _rigidbody;
+    private Collider2D _collider;
     private bool _isGrounded;
     private const float MoveSpeed = 5f;
-    private const  float JumpForce = 10f;
     private Vector2 _currentXVelocity = Vector2.zero;
     
     private Vector2 _playerInputMoveDir = new Vector2(0,0);
-    
     
     private void Awake()
     {
         _isGrounded = true;
         _rigidbody = GetComponent<Rigidbody2D>();
+        _collider = GetComponent<BoxCollider2D>();
         _playerInput = new PlayerInput();
         
         //Setting up what input actions do
@@ -65,10 +65,17 @@ public class PlayerController : MonoBehaviour
     private void CheckIfGrounded()
     {
         //Does a raycast below the player to reset the jump counter
-        if (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 0.75f, LayerMask.GetMask("Ground")) 
-            && (_rigidbody.linearVelocityY <= 0.001f))
+        if (Physics2D.Raycast(transform.position - new Vector3(_collider.bounds.size.x, 0, 0), transform.TransformDirection(Vector2.down), 0.7f, LayerMask.GetMask("Ground")) 
+             || (Physics2D.Raycast(transform.position + new Vector3(_collider.bounds.size.x, 0, 0), transform.TransformDirection(Vector2.down), 0.7f, LayerMask.GetMask("Ground")) 
+             || (Physics2D.Raycast(transform.position, transform.TransformDirection(Vector2.down), 0.7f, LayerMask.GetMask("Ground")))))
+                                                           
         {
             _isGrounded = true;
+        }
+
+        else
+        {
+            _isGrounded = false;
         }
     }
 
@@ -76,10 +83,15 @@ public class PlayerController : MonoBehaviour
     {
         if (_isGrounded)
         {
-            _rigidbody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            // _rigidbody.AddForce(Vector2.up * JumpForce, ForceMode2D.Impulse);
+            float velocity = Mathf.Sqrt(2 * 9.81f * (transform.position.y + 7.5f));
+            velocity -= _rigidbody.linearVelocity.y;
+            _rigidbody.AddForce(Vector2.up * (velocity * _rigidbody.mass), ForceMode2D.Impulse);
             _isGrounded = false;
         }
     }
+
+
 
     private void FixedUpdate()
     {
