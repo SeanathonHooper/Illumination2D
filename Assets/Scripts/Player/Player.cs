@@ -1,72 +1,57 @@
-using System.Collections.Generic;
-using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private Light2D playerColor;
-    [SerializeField] private bool isInvulnerable = false;
-    [SerializeField] private GameObject cameraPrefab;
-    
+    private bool _isInvulnerable = false;
+    private bool _isDead = false;
     private int _playerCurrentHealth;
-    private int _playerMaxHealth = 2;
+    private const int PlayerMaxHealth = 2;
     
     private Vector3 _playerCheckpointLocation;
     
-    private CinemachineCamera _levelCam;
-    
-    
-    //Maps the PlayerHealthState to what color they should be
-    private Dictionary<int, Color> _playerHealthColorLook = new Dictionary<int, Color>
-    {
-        { 0, Color.black },
-        { 1, Color.cyan},
-        { 2, Color.magenta }
-    };
+
+
+    public delegate void DamagePlayerHandler(int currentHealth);
+    public event DamagePlayerHandler OnDamagePlayer;
     
     public void DamagePlayer(int damage)
     {
-        if (isInvulnerable)
+        if (_isInvulnerable || _isDead)
         {
             return;
         }
         
         _playerCurrentHealth -= damage;
-        
         if (_playerCurrentHealth <= 0)
         {
-            playerColor.color = _playerHealthColorLook[0];
             notifyOnPlayerDeath();
         }
-        else if (_playerCurrentHealth >= 2)
-        {
-            playerColor.color = _playerHealthColorLook[2];
-        }
-        else
-        {
-            playerColor.color = _playerHealthColorLook[1];
-        }
+        OnDamagePlayer?.Invoke(_playerCurrentHealth);
+        
     }
 
     //Function that runs when the player dies
     //Tells the game manager to start the respawn timer
+    public delegate void PlayerDeathHandler();
+    public event PlayerDeathHandler OnPlayerDeath;
     private void notifyOnPlayerDeath()
     {
-        _levelCam.Follow = null;
-        gameObject.SetActive(false);
-        GameManager.Instance.StartCoroutine(GameManager.Instance.waitForRespawn());
+        _isDead = true;
+        OnPlayerDeath?.Invoke();
+        GameManager.Instance.StartCoroutine(GameManager.Instance.WaitForRespawn());
     }
+
+    public delegate void PlayerRespawnHandler();
+    public event PlayerRespawnHandler OnPlayerRespawn;
 
     //Re-enables player object to continue playing.
     public void RespawnPlayer()
     {
+        _isDead = false;
         MovePlayerToCheckpoint();
-        _playerCurrentHealth = _playerMaxHealth;
-        gameObject.SetActive(true);
-        playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
-        _levelCam.Follow = transform;
+        OnPlayerRespawn?.Invoke();
+        _playerCurrentHealth = PlayerMaxHealth;
+        
     }
     //Updates which checkpoint the player is at
     public void SetPlayerCheckpoint(Vector3 checkpoint)
@@ -78,18 +63,17 @@ public class Player : MonoBehaviour
     {
         transform.position = _playerCheckpointLocation;
     }
+    
 
     public int GetCurrentHealth()
     {
         return _playerCurrentHealth;
     }
+
     private void Awake()
     {
-            _playerCurrentHealth = _playerMaxHealth;
-            playerColor.color = _playerHealthColorLook[_playerCurrentHealth];
-            _levelCam = Instantiate(cameraPrefab, transform.position, transform.rotation).GetComponent<CinemachineCamera>();
-            _levelCam.Follow = transform;
+        _playerCurrentHealth = PlayerMaxHealth;
+        
     }
-
 
 }

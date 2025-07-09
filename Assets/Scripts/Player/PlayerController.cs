@@ -23,6 +23,7 @@ public class PlayerController : MonoBehaviour
         _playerInput.Player.Move.canceled += _ => _playerInputMoveDir.x = 0;
 
         _playerInput.Player.Jump.performed += _ => JumpPlayer();
+        
 
     }
 
@@ -30,6 +31,9 @@ public class PlayerController : MonoBehaviour
     {
         //Enables input, won't do anything otherwise
         _playerInput.Enable();
+        Player player = GetComponent<Player>();
+        player.OnPlayerDeath += () => _playerInput.Player.Disable();
+        player.OnPlayerRespawn += () => _playerInput.Player.Enable();
     }
 
     private void OnDisable()

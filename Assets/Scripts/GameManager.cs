@@ -1,6 +1,4 @@
 using System.Collections;
-using TMPro;
-using Unity.Cinemachine;
 using UnityEngine;
 
 
@@ -8,15 +6,12 @@ public class GameManager : MonoBehaviour
 {
    [SerializeField] private GameObject playerPrefab;
    [SerializeField] private GameObject uiCanvasPrefab;
-   [SerializeField] private GameObject uiMainTextPrefab;
-   [SerializeField] private GameObject uiSubTextPrefab;
    [SerializeField] private Transform levelStartPoint;
-   
-   
+   [SerializeField] private GameObject cameraPrefab;
+
    private Player _playerEntity;
-   private Canvas _canvas;
-   private TextMeshProUGUI _mainText;
-   private TextMeshProUGUI _subText;
+   Canvas _canvas;
+
    
    public static GameManager Instance;
 
@@ -26,30 +21,34 @@ public class GameManager : MonoBehaviour
       {
          Instance = this;
       }
+      
       _playerEntity = Instantiate(playerPrefab, levelStartPoint.position, levelStartPoint.rotation).GetComponent<Player>();
-
       _playerEntity.SetPlayerCheckpoint(levelStartPoint.position);
-      _canvas = Instantiate(uiCanvasPrefab, Vector3.zero, levelStartPoint.rotation).GetComponent<Canvas>();
-      _mainText = Instantiate(uiMainTextPrefab, _canvas.transform).GetComponent<TextMeshProUGUI>();
-      _subText = Instantiate(uiSubTextPrefab, _canvas.transform).GetComponent<TextMeshProUGUI>();
+      Instantiate(cameraPrefab, transform.position, transform.rotation).GetComponent<PlayerCamera>().Setup(_playerEntity);
+      Instantiate(uiCanvasPrefab, Vector3.zero, levelStartPoint.rotation).GetComponent<GameUI>().Setup(_playerEntity);
+
    }
 
-   public void SetUISubtext(string text)
+   public void OnEnable()
    {
-      _subText.text = text;
+      _playerEntity.OnPlayerDeath += PlayerEntityOnPlayerDeath;
+
    }
    
-
-   public IEnumerator waitForRespawn()
+   public void OnDisable()
    {
-      int countdown = 0;
-      while (countdown < 3)
-      {
-         _mainText.text = "RESPAWNING IN: " + (3 - countdown).ToString() + " SECONDS";
-         countdown++;
-         yield return new WaitForSeconds(1.0f);
-      }
-      _mainText.text = "";
+      _playerEntity.OnPlayerDeath -= PlayerEntityOnPlayerDeath;
+   }
+
+   void PlayerEntityOnPlayerDeath()
+   {
+      StartCoroutine(WaitForRespawn());
+   }
+   
+   
+   public IEnumerator WaitForRespawn()
+   {
+      yield return new WaitForSeconds(3);
       _playerEntity.RespawnPlayer();
    }
 }

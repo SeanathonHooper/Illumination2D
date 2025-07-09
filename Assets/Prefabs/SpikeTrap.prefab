@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6045536359775469365}
   - component: {fileID: 1941585282981178632}
   - component: {fileID: 2263272261357161154}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SpikeTrap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -152,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc786203731455b4d893ba892ed91677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spikeDamage: 1
 --- !u!114 &2263272261357161154
 MonoBehaviour:
   m_ObjectHideFlags: 0

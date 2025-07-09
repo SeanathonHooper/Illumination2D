@@ -312,8 +312,8 @@ Transform:
   m_GameObject: {fileID: 107522987}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -9.013937, y: -11.87622, z: 0.047759864}
-  m_LocalScale: {x: 26.400534, y: 22.4529, z: 1}
+  m_LocalPosition: {x: -14.0751, y: -11.87622, z: 0.047759864}
+  m_LocalScale: {x: 36.5225, y: 22.4529, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262058060}
@@ -951,8 +951,8 @@ Transform:
   m_GameObject: {fileID: 945631721}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -17.47, y: 7.07, z: 0.047759864}
-  m_LocalScale: {x: 9.4007, y: 15.914595, z: 1}
+  m_LocalPosition: {x: -22.5488, y: 7.07, z: 0.047759864}
+  m_LocalScale: {x: 19.558155, y: 15.914595, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262058060}
@@ -1404,6 +1404,7 @@ MonoBehaviour:
   uiMainTextPrefab: {fileID: 9129958161446325477, guid: a5734d18230793b4cac3650c8cc9f8f4, type: 3}
   uiSubTextPrefab: {fileID: 3191526073310738773, guid: 9e30ce24ea75512468ec867dbde2d236, type: 3}
   levelStartPoint: {fileID: 1094616318}
+  cameraPrefab: {fileID: 5065194372872981127, guid: 1558a3215f0eb074389d09a03c59c643, type: 3}
 --- !u!4 &1281066506
 Transform:
   m_ObjectHideFlags: 0
@@ -1687,7 +1688,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 6.559269, y: -4.9500866}
+  m_Offset: {x: 6.559269, y: -2.0980647}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -1697,7 +1698,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 95.35255, y: 10.945816}
+  m_Size: {x: 95.35255, y: 16.64986}
   m_EdgeRadius: 0
 --- !u!4 &1649897095
 Transform:
@@ -1741,8 +1742,8 @@ Transform:
   m_GameObject: {fileID: 1701543807}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -12.83, y: -0.03, z: 0.047759864}
-  m_LocalScale: {x: 3.8716, y: 3.515491, z: 1}
+  m_LocalPosition: {x: -12.85, y: -0.03, z: 0.047759864}
+  m_LocalScale: {x: 7.932521, y: 3.515491, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1262058060}

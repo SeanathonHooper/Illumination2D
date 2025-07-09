@@ -181,6 +181,7 @@ GameObject:
   - component: {fileID: 5827115006238093726}
   - component: {fileID: 1406512686930406867}
   - component: {fileID: 2625742568461147682}
+  - component: {fileID: 7774667199757226060}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -266,3 +267,15 @@ MonoBehaviour:
     RotationDamping: {x: 1, y: 1, z: 1}
     QuaternionDamping: 1
   FollowOffset: {x: 0, y: 1.4, z: -10}
+--- !u!114 &7774667199757226060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5065194372872981127}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe04ea30124879140a074bf59b73c47a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
